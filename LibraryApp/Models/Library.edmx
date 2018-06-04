@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="LibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="books">
+          <Key>
+            <PropertyRef Name="Ranking" />
+          </Key>
+          <Property Name="Ranking" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" />
+          <Property Name="Author" Type="nvarchar(max)" />
+          <Property Name="Sales" Type="int" />
+          <Property Name="Imprint" Type="nvarchar(max)" />
+          <Property Name="Publisher" Type="nvarchar(max)" />
+          <Property Name="YearPublished" Type="int" />
+          <Property Name="Genre" Type="nvarchar(max)" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Borrower" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Borrowers">
+          <Key>
+            <PropertyRef Name="BorrowerID" />
+          </Key>
+          <Property Name="BorrowerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BorrowerFirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="BorrowerLastName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="BorrowerEmail" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Statuses">
+          <Key>
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Name="StatusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_books_Borrowers">
+          <End Role="Borrowers" Type="Self.Borrowers" Multiplicity="1" />
+          <End Role="books" Type="Self.books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Borrowers">
+              <PropertyRef Name="BorrowerID" />
+            </Principal>
+            <Dependent Role="books">
+              <PropertyRef Name="Borrower" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_books_Statuses1">
+          <End Role="Statuses" Type="Self.Statuses" Multiplicity="1" />
+          <End Role="books" Type="Self.books" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuses">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="books">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LibraryModelStoreContainer">
+          <EntitySet Name="books" EntityType="Self.books" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Borrowers" EntityType="Self.Borrowers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Statuses" EntityType="Self.Statuses" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_books_Borrowers" Association="Self.FK_books_Borrowers">
+            <End Role="Borrowers" EntitySet="Borrowers" />
+            <End Role="books" EntitySet="books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_books_Statuses1" Association="Self.FK_books_Statuses1">
+            <End Role="Statuses" EntitySet="Statuses" />
+            <End Role="books" EntitySet="books" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="book">
+          <Key>
+            <PropertyRef Name="Ranking" />
+          </Key>
+          <Property Name="Ranking" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Author" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Sales" Type="Int32" />
+          <Property Name="Imprint" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Publisher" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="YearPublished" Type="Int32" />
+          <Property Name="Genre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Borrower" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Borrower1" Relationship="LibraryModel.FK_books_Borrowers" FromRole="book" ToRole="Borrower" />
+          <NavigationProperty Name="Status1" Relationship="LibraryModel.FK_books_Statuses1" FromRole="book" ToRole="Status" />
+        </EntityType>
+        <EntityType Name="Borrower">
+          <Key>
+            <PropertyRef Name="BorrowerID" />
+          </Key>
+          <Property Name="BorrowerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BorrowerFirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BorrowerLastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BorrowerEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="books" Relationship="LibraryModel.FK_books_Borrowers" FromRole="Borrower" ToRole="book" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusID" />
+          </Key>
+          <Property Name="StatusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status1" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="books" Relationship="LibraryModel.FK_books_Statuses1" FromRole="Status" ToRole="book" />
+        </EntityType>
+        <EntityContainer Name="LibraryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="books" EntityType="Self.book" />
+          <EntitySet Name="Borrowers" EntityType="Self.Borrower" />
+          <EntitySet Name="Statuses" EntityType="Self.Status" />
+          <AssociationSet Name="FK_books_Borrowers" Association="LibraryModel.FK_books_Borrowers">
+            <End Role="Borrower" EntitySet="Borrowers" />
+            <End Role="book" EntitySet="books" />
+          </AssociationSet>
+          <AssociationSet Name="FK_books_Statuses1" Association="LibraryModel.FK_books_Statuses1">
+            <End Role="Status" EntitySet="Statuses" />
+            <End Role="book" EntitySet="books" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_books_Borrowers">
+          <End Type="LibraryModel.Borrower" Role="Borrower" Multiplicity="1" />
+          <End Type="LibraryModel.book" Role="book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Borrower">
+              <PropertyRef Name="BorrowerID" />
+            </Principal>
+            <Dependent Role="book">
+              <PropertyRef Name="Borrower" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_books_Statuses1">
+          <End Type="LibraryModel.Status" Role="Status" Multiplicity="1" />
+          <End Type="LibraryModel.book" Role="book" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="StatusID" />
+            </Principal>
+            <Dependent Role="book">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LibraryModelStoreContainer" CdmEntityContainer="LibraryEntities">
+          <EntitySetMapping Name="books">
+            <EntityTypeMapping TypeName="LibraryModel.book">
+              <MappingFragment StoreEntitySet="books">
+                <ScalarProperty Name="Ranking" ColumnName="Ranking" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Sales" ColumnName="Sales" />
+                <ScalarProperty Name="Imprint" ColumnName="Imprint" />
+                <ScalarProperty Name="Publisher" ColumnName="Publisher" />
+                <ScalarProperty Name="YearPublished" ColumnName="YearPublished" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Borrower" ColumnName="Borrower" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Borrowers">
+            <EntityTypeMapping TypeName="LibraryModel.Borrower">
+              <MappingFragment StoreEntitySet="Borrowers">
+                <ScalarProperty Name="BorrowerID" ColumnName="BorrowerID" />
+                <ScalarProperty Name="BorrowerFirstName" ColumnName="BorrowerFirstName" />
+                <ScalarProperty Name="BorrowerLastName" ColumnName="BorrowerLastName" />
+                <ScalarProperty Name="BorrowerEmail" ColumnName="BorrowerEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Statuses">
+            <EntityTypeMapping TypeName="LibraryModel.Status">
+              <MappingFragment StoreEntitySet="Statuses">
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="Status1" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

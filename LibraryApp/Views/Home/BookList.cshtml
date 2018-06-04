@@ -1,0 +1,47 @@
+﻿@using LibraryApp.Models;
+@{
+    ViewBag.Title = "Book List";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+<form action="~/Home/BookListByAuthor" method="get">
+    <label>Search by author:
+    <input type="text" name="author" class="form-control"/>
+    </label>
+    <input type="submit" value="Search by Author" class="btn btn-primary" />
+</form>
+<br />
+<form action="~/Home/BookListByStatus" method="get">
+    <label>
+        Search by status:
+        <select name="status">
+            @foreach (Status s in ViewBag.Statuses)
+            {
+                <option value="@s.StatusID">@s.Status1</option>
+            }
+        </select>
+    </label>
+    <input type="submit" value="Search by Status" class="btn btn-primary" />
+</form>
+
+<table class="table table-bordered">
+    <tr>
+        <th><a href="~/Home/BookListSorted?column=Title">Title</a></th>
+        <th><a href="~/Home/BookListSorted?column=Author">Author</a></th>
+        <th><a href="~/Home/BookListSorted?column=YearPublished">Year</a></th>
+        <th><a href="~/Home/BookListSorted?column=Status">Status</a></th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (book b in ViewBag.Books)
+    {
+        <tr>
+            <td>@b.Title</td>
+            <td>@b.Author</td>
+            <td>@b.YearPublished</td>
+            <td>@b.Status</td>
+            <td><a href="~/Home/Add?id=@b.Ranking" 
+                   class="btn btn-primary">Add to Bag</a></td>
+        </tr>
+    }
+</table>

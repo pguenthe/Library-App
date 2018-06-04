@@ -1,0 +1,15 @@
+﻿@using LibraryApp.Models;
+@{
+    ViewBag.Title = "Add";
+}
+
+<h2>Book Added</h2>
+
+Cart:
+<ul>
+    @foreach (book b in (List<book>)(Session["Cart"]))
+    {
+        <li>@b.Title by @b.Author</li>
+    }
+</ul>
+
